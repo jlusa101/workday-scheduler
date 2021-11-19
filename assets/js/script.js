@@ -5,6 +5,12 @@ var currentTime = moment().toDate().getTime();
 var taskId = 0;
 var tasksOfTheDay = [];
 
+var tasksOfTheDayObj = {
+    task: "",
+    reference: "",
+    id: ""
+}
+
 // Setting the current day to be shown to user while in browser
 currentDay.text(moment(todaysDate).format("dddd, MMMM Do YYYY"));
 
@@ -33,16 +39,32 @@ $(".container").find("textarea").each(function() {
     hour++;
 })
 
+$("textArea").change(function() {
+    var taskEdit = $(this).attr("id");
+
+    for (var i = 0; i < tasksOfTheDay.length; i++) {
+        if (tasksOfTheDay[i].reference === taskEdit) {
+            tasksOfTheDay.splice(i, 1);
+        }
+    }
+})
+
 $(".saveBtn").click(function() {
 
-    // Saving the task to an object that contains a reference and an unique Id
-    var tasksOfTheDayObj = {
-        task: $(this).parent().find("textarea").val(),
-        reference: $(this).parent().find("textarea").attr("id"),
-        id: taskId
+    var userTask = $(this).parent().find("textarea").val();
+
+    // Doesn't allow the saving of empty task strings
+    if (userTask === "") {
+        return;
     }
 
-    // Incrementing the task Id
+    // Saving the task to an object that contains a reference and an unique Id
+    tasksOfTheDayObj = {
+            task: userTask,
+            reference: $(this).parent().find("textarea").attr("id"),
+            id: taskId
+        }
+        // Incrementing the task Id
     taskId++;
 
     // Pushing the task object to the task array
@@ -54,8 +76,38 @@ $(".saveBtn").click(function() {
 })
 
 
+// Function that loads the previously saved tasks onto the scheduler
+$(document).ready(function() {
+    // Retrieving local storage and saving them in a local variable
+    var savedTasks = localStorage.getItem("work-tasks");
 
+    // Checking to see if there was anything in local storage
+    if (savedTasks === null) {
+        return false;
+    }
+    // Parsing the JSON object back to an array
+    savedTasks = JSON.parse(savedTasks);
 
-// $(document).ready(function() {
-//     setInterval(updateTime, 1000);
-// })
+    // Looping through the array the holds the objects
+    for (var i = 0; i < savedTasks.length; i++) {
+        var taskRef = savedTasks[i].reference;
+
+        tasksOfTheDayObj = {
+            task: savedTasks[i].task,
+            reference: savedTasks[i].reference,
+            id: savedTasks[i].id
+        }
+
+        tasksOfTheDay.push(tasksOfTheDayObj);
+
+        // Adding a # to the Id
+        taskRef = "#" + taskRef;
+        // Placing the saved tasks onto the work scheduler
+        $(".row").find(taskRef).text(savedTasks[i].task);
+
+        // Adjusting the taskId to reflect the saved tasks
+        taskId = savedTasks[i].id;
+
+    }
+
+})

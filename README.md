@@ -9,6 +9,7 @@
 * CSS
 * JavaScript
 * JQuery
+* Bootstrap
 
 ## Website
 
