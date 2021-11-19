@@ -55,9 +55,20 @@ $("textArea").change(function() {
 $(".saveBtn").click(function() {
     // Capture the value of the textarea
     var userTask = $(this).parent().find("textarea").val();
+    // Capture the id of the selected textarea
+    var userId = $(this).parent().find("textarea").attr("id");
 
     // Doesn't allow the saving of empty task strings
+    // and if user wants to delete an event, this loop will handle that
     if (userTask === "") {
+        for (var i = 0; i < tasksOfTheDay.length; i++) {
+            if (tasksOfTheDay[i].reference === userId) {
+                tasksOfTheDay.splice(i, 1);
+                break;
+            }
+        }
+        // Saving updated task array in local storage
+        localStorage.setItem("work-tasks", JSON.stringify(tasksOfTheDay));
         return;
     }
 
