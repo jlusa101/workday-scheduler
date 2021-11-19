@@ -52,6 +52,11 @@ $("textArea").change(function() {
     }
 })
 
+// Function that gets triggered when user clicks on the save button to save an event
+// If the textarea is empty, nothing will happen,
+// If the user enters an event and saves, the event is saved in local storage
+// If the user clears the previously entered textarea and clicks save button, 
+// The event will get deleted from array/local storage
 $(".saveBtn").click(function() {
     // Capture the value of the textarea
     var userTask = $(this).parent().find("textarea").val();
@@ -59,7 +64,7 @@ $(".saveBtn").click(function() {
     var userId = $(this).parent().find("textarea").attr("id");
 
     // Doesn't allow the saving of empty task strings
-    // and if user wants to delete an event, this loop will handle that
+    // unless it is to delete an event
     if (userTask === "") {
         for (var i = 0; i < tasksOfTheDay.length; i++) {
             if (tasksOfTheDay[i].reference === userId) {
@@ -69,18 +74,26 @@ $(".saveBtn").click(function() {
         }
         // Saving updated task array in local storage
         localStorage.setItem("work-tasks", JSON.stringify(tasksOfTheDay));
+
+        // Clearing local storage if the array length is 0
+        if (tasksOfTheDay.length === 0) {
+            localStorage.clear();
+        }
+
         return;
+    } else {
+        // Saving the task to an object that contains a reference and an unique Id
+        tasksOfTheDayObj = {
+            task: userTask,
+            reference: $(this).parent().find("textarea").attr("id"),
+            id: taskId
+        }
+
+        // Incrementing the task Id
+        taskId++;
     }
 
-    // Saving the task to an object that contains a reference and an unique Id
-    tasksOfTheDayObj = {
-        task: userTask,
-        reference: $(this).parent().find("textarea").attr("id"),
-        id: taskId
-    }
 
-    // Incrementing the task Id
-    taskId++;
 
     // Pushing the task object to the task array
     tasksOfTheDay.push(tasksOfTheDayObj);
