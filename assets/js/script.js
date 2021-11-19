@@ -35,13 +35,16 @@ $(".container").find("textarea").each(function() {
         $(this).css("background-color", "#00FF00");
     }
 
-    // Incrementing the hour to traverse time blocks in the calendar
+    // Incrementing the hour to traverse time blocks in the scheduler
     hour++;
 })
 
+// Function that gets triggered when user has changed something in the textarea
 $("textArea").change(function() {
+    // Capture the id of the affected textarea
     var taskEdit = $(this).attr("id");
 
+    // Loop through the tasksOfTheDay array and remove the 
     for (var i = 0; i < tasksOfTheDay.length; i++) {
         if (tasksOfTheDay[i].reference === taskEdit) {
             tasksOfTheDay.splice(i, 1);
@@ -50,7 +53,7 @@ $("textArea").change(function() {
 })
 
 $(".saveBtn").click(function() {
-
+    // Capture the value of the textarea
     var userTask = $(this).parent().find("textarea").val();
 
     // Doesn't allow the saving of empty task strings
@@ -60,11 +63,12 @@ $(".saveBtn").click(function() {
 
     // Saving the task to an object that contains a reference and an unique Id
     tasksOfTheDayObj = {
-            task: userTask,
-            reference: $(this).parent().find("textarea").attr("id"),
-            id: taskId
-        }
-        // Incrementing the task Id
+        task: userTask,
+        reference: $(this).parent().find("textarea").attr("id"),
+        id: taskId
+    }
+
+    // Incrementing the task Id
     taskId++;
 
     // Pushing the task object to the task array
@@ -109,5 +113,8 @@ $(document).ready(function() {
         taskId = savedTasks[i].id;
 
     }
+
+    // Incrementing to the next number to avoid duplicates
+    taskId++;
 
 })
