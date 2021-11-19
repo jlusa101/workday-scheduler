@@ -33,8 +33,10 @@ In the future, the workday scheduler might contain events that are time stamped 
 https://jlusa101.github.io/workday-scheduler/
 
 ## Screenshots
-![ws1](https://user-images.githubusercontent.com/91491552/142691354-ea542c51-d3f3-4a10-979f-cc16a6f88487.JPG)
+![ws1](https://user-images.githubusercontent.com/91491552142691354-ea542c51-d3f3-4a10-979f-cc16a6f88487.JPG)
+
 ![ws2](https://user-images.githubusercontent.com/91491552/142691359-d434c4d5-1e11-4025-98fe-0e4ae5b82adc.JPG)
+
 ![ws3](https://user-images.githubusercontent.com/91491552/142691366-21434697-7b4e-454a-be70-37870d6311e6.JPG)
 
 
